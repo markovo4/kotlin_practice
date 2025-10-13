@@ -1,15 +1,37 @@
-.gradle
+### Gradle ###
+.gradle/
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+gradle-app.setting
+.gradle-cache/
+.gradle-test-kit/
+
+# Local Gradle properties
+gradle.properties
+**/gradle-local.properties
+
+### Kotlin ###
+.kotlin/
+*.kotlin_metadata
+*.kotlin_module
+*.kotlin_builtins
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
-.idea/*
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/vcs.xml
+.idea/dictionaries/
+.idea/httpRequests/
+.idea/shelf/
+.idea/caches/
+.idea/assetWizardSettings.xml
+.idea/
 *.iws
 *.iml
 *.ipr
@@ -17,17 +39,19 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### Kotlin ###
-.kotlin
+### VS Code ###
+.vscode/
+.history/
+*.code-workspace
 
 ### Eclipse ###
-.apt_generated
+.apt_generated/
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
-.sts4-cache
+.sts4-cache/
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
@@ -39,8 +63,39 @@ bin/
 /nbdist/
 /.nb-gradle/
 
-### VS Code ###
-.vscode/
+### Logs and temporary files ###
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.bak
+*.orig
+*.rej
+*.diff
+*.patch
 
-### Mac OS ###
+### System files ###
 .DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+### JetBrains Fleet ###
+.fleet/
+
+### Android Studio (если проект Android) ###
+*.apk
+*.ap_
+*.dex
+*.class
+captures/
+.externalNativeBuild/
+.cxx/
+local.properties
+
+### OS-specific ###
+Icon?
+._*
+.Trashes

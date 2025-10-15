@@ -1,8 +1,8 @@
 package todolist
 
-import todolist.application.todo.TodoApp
+import todolist.presentation.cli.TodoCLI
 
 fun main() {
-    val todoApp = TodoApp()
-    todoApp.start()
+    val todoCLI = TodoCLI()
+    todoCLI.start()
 }

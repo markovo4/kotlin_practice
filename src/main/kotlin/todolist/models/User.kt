@@ -1,16 +1,16 @@
-package todolist.domain.models;
+package todolist.models
 
-public class User (
+class User (
     email: String,
     username: String,
     private var passwordHash: String,
     id: Int = nextId()
 ){
     var email: String = email
-        private set;
+        private set
 
     var username: String = username
-        private set;
+        private set
 
     fun changePassword(newPasswordHash: String){
         passwordHash = newPasswordHash
@@ -19,7 +19,7 @@ public class User (
         private set
 
     companion object{
-        private var lastId = 0;
+        private var lastId = 0
 
         private fun nextId(): Int{
             lastId++

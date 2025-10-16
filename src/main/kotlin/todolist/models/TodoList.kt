@@ -1,6 +1,5 @@
 package todolist.models
 
-import todolist.domain.models.NoteStatus
 import todolist.models.exceptions.TodoInvalidContentException
 import todolist.models.exceptions.TodoListNoContentException
 import todolist.models.exceptions.TodoNotFoundException

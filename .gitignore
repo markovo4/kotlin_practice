@@ -99,3 +99,6 @@ local.properties
 Icon?
 ._*
 .Trashes
+
+
+.env

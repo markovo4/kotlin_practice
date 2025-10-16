@@ -1,7 +1,5 @@
 package todolist.models
 
-import todolist.domain.models.NoteStatus
-
 class Todo(
     todo: String,
     status: NoteStatus = NoteStatus.TODO,

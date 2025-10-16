@@ -1,6 +1,6 @@
 package todolist.presentation.cli
 
-import todolist.domain.models.NoteStatus
+import todolist.models.NoteStatus
 import todolist.application.todo.TodoService
 
 class TodoCLI (

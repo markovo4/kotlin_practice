@@ -1,4 +1,4 @@
-package todolist.domain.models
+package todolist.models
 
 enum class NoteStatus {
     COMPLETED,

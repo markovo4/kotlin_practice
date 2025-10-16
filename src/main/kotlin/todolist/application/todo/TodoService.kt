@@ -1,6 +1,6 @@
 package todolist.application.todo
 
-import todolist.domain.models.NoteStatus
+import todolist.models.NoteStatus
 import todolist.models.Todo
 import todolist.models.TodoList
 

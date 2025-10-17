@@ -11,5 +11,6 @@ object Config {
     val dbDriver = env["DB_DRIVER"] ?: "com.mysql.cj.jdbc.Driver"
     val dbUser = env["DB_USER"] ?: "root"
     val dbPassword = env["DB_PASSWORD"] ?: ""
-    val appPort = env["APP_PORT"] ?: "8080"
+//    val appPort = env["APP_PORT"] ?: "8080"
+    val secretKey = env["JWT_SECRET"] ?: ""
 }

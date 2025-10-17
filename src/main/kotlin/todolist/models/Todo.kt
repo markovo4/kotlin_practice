@@ -1,32 +1,30 @@
 package todolist.models
 
-class Todo(
-    todo: String,
-    status: NoteStatus = NoteStatus.TODO,
-    id: Int = nextId()
+import org.ktorm.dsl.QueryRowSet
+import todolist.database.Todos
+
+data class Todo(
+    var content: String,
+    var userId: Int? = null,
+    var status: NoteStatus = NoteStatus.TODO,
+    val id: Int? = null
 ) {
     fun edit(newTodo: String) {
-        todo = newTodo
+        content = newTodo
     }
 
     fun changeStatus(newStatus: NoteStatus) {
         status = newStatus
     }
 
-    var todo: String = todo
-        private set
-
-    var status: NoteStatus = status
-        private set
-
-    var id: Int = id
-        private set
-
     companion object {
-        private var lastId = 0
-        private fun nextId(): Int {
-            lastId++
-            return lastId
+        fun fromRow(row: QueryRowSet): Todo {
+            return Todo(
+                id = row[Todos.id] ?: 0,
+                content = row[Todos.content].orEmpty(),
+                status = NoteStatus.valueOf(row[Todos.status].orEmpty()),
+                userId = row[Todos.userId] ?: 0
+            )
         }
     }
 }

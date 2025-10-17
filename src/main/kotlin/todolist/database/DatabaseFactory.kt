@@ -13,14 +13,16 @@ object DatabaseFactory {
         )
     }
 
-    fun testConnection() {
-        try {
+    fun testConnection(): Boolean {
+        return try {
             db.useConnection { connection ->
-                println("✅ Connected to MySQL: ${connection.metaData.url}")
+                println("Connected to MySQL: ${connection.metaData.url}")
                 println("   DB version: ${connection.metaData.databaseProductVersion}")
+                true
             }
         }catch (e: Exception) {
             println("Failed to connect: ${e.message}")
+            false
         }
     }
 }

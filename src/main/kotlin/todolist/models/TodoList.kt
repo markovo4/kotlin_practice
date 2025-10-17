@@ -3,15 +3,17 @@ package todolist.models
 import todolist.models.exceptions.TodoInvalidContentException
 import todolist.models.exceptions.TodoListNoContentException
 import todolist.models.exceptions.TodoNotFoundException
+import todolist.repository.DbTodoRepository
+import todolist.repository.TodoRepository
 
 class TodoList(
-    private val todos: MutableList<Todo> = mutableListOf()
+    private val todoList: MutableList<Todo> = mutableListOf()
 ) {
-
     fun editTodoText(id: Int, newTodoText: String): Result<Unit>{
-        val todo = todos.find { todo -> todo.id == id } ?: return Result.failure(TodoNotFoundException(id))
 
-        if(todos.isEmpty()) return Result.failure(TodoListNoContentException())
+        val todo = todoList.find { todo -> todo.id == id } ?: return Result.failure(TodoNotFoundException(id))
+
+        if(todoList.isEmpty()) return Result.failure(TodoListNoContentException())
 
         if(newTodoText.isBlank()) return Result.failure(TodoInvalidContentException())
 
@@ -19,31 +21,36 @@ class TodoList(
         return Result.success(Unit)
     }
 
-
-    fun addTodo(todoContent: String): Result<Unit> {
+    fun addTodo(todoContent: String, userId: Int): Result<Unit> {
         if(todoContent.isBlank()) return Result.failure(TodoInvalidContentException())
 
-        val todo = Todo(todoContent)
-        todos.add(todo)
+        val todo = Todo(todoContent, userId)
+        todoList.add(todo)
         return Result.success(Unit)
     }
 
     fun editTodoStatus(id: Int, newStatus: NoteStatus): Result<Unit> {
-        val todo = todos.find {todo -> todo.id == id } ?: return Result.failure(TodoNotFoundException(id))
+        val todo = todoList.find {todo -> todo.id == id } ?: return Result.failure(TodoNotFoundException(id))
 
         todo.changeStatus(newStatus)
         return Result.success(Unit)
     }
 
     fun deleteTodo(id: Int): Result<Unit> {
-        val todo = todos.find {todo -> todo.id == id } ?: return Result.failure(TodoNotFoundException(id))
-        todos.remove(todo)
+        val todo = todoList.find {todo -> todo.id == id } ?: return Result.failure(TodoNotFoundException(id))
+        todoList.remove(todo)
         return Result.success(Unit)
     }
 
     fun listTodos(): Result<List<Todo>> {
-        if(todos.isEmpty()) return Result.failure(TodoListNoContentException())
+        if(todoList.isEmpty()) return Result.failure(TodoListNoContentException())
 
-        return Result.success(todos.toList())
+        return Result.success(todoList.toList())
     }
+
+    fun clearAndAddAll(newTodos: List<Todo>) {
+        todoList.clear()
+        todoList.addAll(newTodos)
+    }
+
 }

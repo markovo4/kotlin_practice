@@ -6,8 +6,9 @@ import todolist.database.Todos
 data class Todo(
     var content: String,
     var userId: Int? = null,
+    val id: Int? = null,
     var status: NoteStatus = NoteStatus.TODO,
-    val id: Int? = null
+
 ) {
     fun edit(newTodo: String) {
         content = newTodo

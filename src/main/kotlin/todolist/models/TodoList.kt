@@ -3,8 +3,6 @@ package todolist.models
 import todolist.models.exceptions.TodoInvalidContentException
 import todolist.models.exceptions.TodoListNoContentException
 import todolist.models.exceptions.TodoNotFoundException
-import todolist.repository.DbTodoRepository
-import todolist.repository.TodoRepository
 
 class TodoList(
     private val todoList: MutableList<Todo> = mutableListOf()
@@ -21,10 +19,10 @@ class TodoList(
         return Result.success(Unit)
     }
 
-    fun addTodo(todoContent: String, userId: Int): Result<Unit> {
+    fun addTodo(todoContent: String, userId: Int, id: Int): Result<Unit> {
         if(todoContent.isBlank()) return Result.failure(TodoInvalidContentException())
 
-        val todo = Todo(todoContent, userId)
+        val todo = Todo(todoContent, userId, id)
         todoList.add(todo)
         return Result.success(Unit)
     }

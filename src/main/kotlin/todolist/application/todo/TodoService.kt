@@ -20,11 +20,14 @@ class TodoService (
     }
 
     fun addTodo(todoContent: String) {
-        val localResult = todoList.addTodo(todoContent, session.userId)
-        localResult.getOrThrow()
-
         val newTodo = Todo(content = todoContent)
-        todoRepository.add(newTodo, session.userId)
+        val result = todoRepository.add(newTodo, session.userId)
+        val savedTodo = result.getOrThrow()
+
+        if(savedTodo.id == null) return
+
+        val localResult = todoList.addTodo(todoContent, session.userId, savedTodo.id)
+        localResult.getOrThrow()
 
     }
 
@@ -47,10 +50,5 @@ class TodoService (
 
         todoRepository.delete(id)
     }
-
-//    fun loadFromDatabase() {
-//        val todos = todoRepository.findAll(session.userId)
-//        todoList.clearAndAddAll(todos)
-//    }
 
 }

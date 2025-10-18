@@ -21,7 +21,6 @@ class DbTodoRepository (private val db: Database): TodoRepository {
             set(it.status, todo.status.toString())
             set(it.userId, userId)
         } as Int
-
         todo.copy(id = id, userId = userId)
     }
 

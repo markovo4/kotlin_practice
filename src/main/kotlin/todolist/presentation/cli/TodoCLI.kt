@@ -13,7 +13,7 @@ class TodoCLI {
     private var todoService: TodoService? = null
 
     private fun handleRegister() {
-        println("Please enter the following credentials to create an account:")
+        println("-Please enter the following credentials to create an account:")
 
         var username: String
         var email: String
@@ -24,7 +24,7 @@ class TodoCLI {
             username = readlnOrNull() ?: ""
 
             if(username.isNotBlank()) break
-            println("Username cannot be empty. Please try again.")
+            println("-Username cannot be empty. Please try again.")
         }
 
         while(true){
@@ -32,10 +32,10 @@ class TodoCLI {
             email = readlnOrNull() ?: ""
 
             if(email.isBlank()){
-                println("Email cannot be empty.")
+                println("-Email cannot be empty.")
                 continue
             } else if (!email.matches(Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"))){
-                println("Invalid email format. Try again.")
+                println("-Invalid email format. Try again.")
                 continue
             }
             break
@@ -46,19 +46,24 @@ class TodoCLI {
             password = readlnOrNull() ?: ""
 
             if (password.length < 6) {
-                println("Password must be at least 6 characters long.")
+                println("-Password must be at least 6 characters long.")
                 continue
             }
             break
         }
-        AuthService.register(username, email, password)
+        if(!AuthService.register(username, email, password)){
+            println("\n-User with such email exists already")
+            println("-Please repeat the operation\n")
+
+            handleRegister()
+        }
 
         session = AuthService.login(email, password)
     }
 
 
     private fun handleLogin() {
-        println("Please enter the following credentials to log in into an account:")
+        println("-Please enter the following credentials to log in into an account:")
 
         var email: String
         var password: String
@@ -68,10 +73,10 @@ class TodoCLI {
             email = readlnOrNull() ?: ""
 
             if(email.isBlank()){
-                println("Email cannot be empty.")
+                println("-Email cannot be empty.")
                 continue
             } else if (!email.matches(Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"))){
-                println("Invalid email format. Try again.")
+                println("-Invalid email format. Try again.")
                 continue
             }
             break
@@ -82,10 +87,17 @@ class TodoCLI {
             password = readlnOrNull() ?: ""
 
             if (password.length < 6) {
-                println("Password must be at least 6 characters long.")
+                println("-Password must be at least 6 characters long.")
                 continue
             }
             break
+        }
+
+        if(AuthService.login(email, password) == null){
+            println("\n-Invalid credentials!")
+            println("-Please repeat the operation\n")
+
+            handleLogin()
         }
 
         session = AuthService.login(email, password)
@@ -96,7 +108,7 @@ class TodoCLI {
 
         while (session == null){
             println("-------------------Please sign in / sign up using the menu below-------------------")
-            println("Choose an action: \n[1] Sign up \n[2] Login \n[0] Exit")
+            println("-Choose an action: \n[1] Sign up \n[2] Login \n[0] Exit")
 
             when(readlnOrNull()){
                 "0" -> {
@@ -122,11 +134,11 @@ class TodoCLI {
 
         while(true){
             println("-------------------------------TodoList Menu!-------------------------------")
-            println("Choose an action: \n[1] Display \n[2] Add \n[3] Edit \n[4] Edit Todo Status \n[5] Delete \n[0] Exit")
+            println("-Choose an action: \n[1] Display \n[2] Add \n[3] Edit \n[4] Edit Todo Status \n[5] Delete \n[0] Exit")
             try{
                 when(readlnOrNull()){
                     "0" -> {
-                        println("Exiting program...")
+                        println("-Exiting program...")
                         Thread.sleep(500)
                         break
                     }
@@ -156,7 +168,7 @@ class TodoCLI {
         val todoContent = readln()
 
         todoService?.addTodo(todoContent)
-        println("Adding todo to the list...")
+        println("-Adding todo to the list...")
         Thread.sleep(1000)
     }
 
@@ -178,9 +190,9 @@ class TodoCLI {
         print("Which todo status would you like to modify? (Enter valid ID): ")
         val id = readln().toIntOrNull() ?: return println("Invalid todo ID!")
 
-        println("Please select new status for $id todo: \n[1] COMPLETED \n[2] IN PROGRESS \n[3] TODO")
+        println("-Please select new status for $id todo: \n[1] COMPLETED \n[2] IN PROGRESS \n[3] TODO")
         when(readlnOrNull()){
-            null -> println("Invalid Status!")
+            null -> println("-Invalid Status!")
             "1" -> todoService?.editTodoStatus(id, NoteStatus.COMPLETED)
             "2" -> todoService?.editTodoStatus(id, NoteStatus.IN_PROGRESS)
             "3" -> todoService?.editTodoStatus(id, NoteStatus.TODO)
@@ -191,9 +203,9 @@ class TodoCLI {
         displayTodoList()
 
         print("Which todo would you like to delete? (Enter valid ID): ")
-        val id = readln().toIntOrNull() ?: return println("Invalid todo ID!")
+        val id = readln().toIntOrNull() ?: return println("-Invalid todo ID!")
 
-        println("Deleting Todo...")
+        println("-Deleting Todo...")
         Thread.sleep(1000)
         todoService?.deleteTodo(id)
     }

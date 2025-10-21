@@ -1,6 +1,9 @@
 package todolist.application.auth
 
 import org.ktorm.dsl.eq
+import org.ktorm.dsl.from
+import org.ktorm.dsl.select
+import org.ktorm.dsl.where
 import org.ktorm.entity.add
 import org.ktorm.entity.find
 import org.ktorm.entity.sequenceOf
@@ -14,7 +17,10 @@ object AuthService {
     private val db = DatabaseFactory.db
 
     fun register(username: String, email: String, password: String): Boolean {
-        val exists = db.sequenceOf(Users).find { it.email eq email } != null
+        val exists = db.from(Users)
+            .select()
+            .where { Users.email eq email }
+            .totalRecordsInAllPages > 0
 
         if(exists) return false
 

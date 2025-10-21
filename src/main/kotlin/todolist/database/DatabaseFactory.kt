@@ -13,7 +13,7 @@ object DatabaseFactory {
         )
     }
 
-    fun testConnection(): Boolean {
+    fun init(): Boolean {
         return try {
             db.useConnection { connection ->
                 println("Connected to MySQL: ${connection.metaData.url}")

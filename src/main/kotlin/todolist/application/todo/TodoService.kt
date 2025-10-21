@@ -31,24 +31,34 @@ class TodoService (
 
     }
 
-    fun editTodo(id: Int, newContent: String) {
+    fun editTodo(id: Int, newContent: String): Todo {
         todoList.editTodoText(id, newContent).getOrThrow()
 
         val todo = todoRepository.findById(id) ?: throw TodoNotFoundException(id)
+        todo.content = newContent
         todoRepository.update(todo)
+
+        return todo
     }
 
-    fun editTodoStatus(id: Int, newStatus: NoteStatus) {
+    fun editTodoStatus(id: Int, newStatus: NoteStatus): Todo {
         todoList.editTodoStatus(id, newStatus).getOrThrow()
 
         val todo = todoRepository.findById(id) ?: throw TodoNotFoundException(id)
+        todo.status = newStatus
         todoRepository.update(todo)
+
+        return todo
     }
 
     fun deleteTodo(id: Int) {
         todoList.deleteTodo(id).getOrThrow()
 
         todoRepository.delete(id)
+    }
+
+    fun getTodoById(id: Int): Todo {
+        return todoRepository.findById(id) ?: throw TodoNotFoundException(id)
     }
 
 }

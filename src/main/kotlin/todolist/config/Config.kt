@@ -11,6 +11,19 @@ object Config {
     val dbDriver = env["DB_DRIVER"] ?: "com.mysql.cj.jdbc.Driver"
     val dbUser = env["DB_USER"] ?: "root"
     val dbPassword = env["DB_PASSWORD"] ?: ""
-//    val appPort = env["APP_PORT"] ?: "8080"
+    val appPort: Int = (env["APP_PORT"] ?: "8080").toInt()
     val secretKey = env["JWT_SECRET"] ?: ""
+
+    object Redis {
+        val host = env["REDIS_HOST"] ?: "localhost"
+        val port = (env["REDIS_PORT"] ?: "6379").toInt()
+        val database = (env["REDIS_DB"] ?: "0").toInt()
+        val password = env["REDIS_PASSWORD"] ?: ""
+
+        val url: String
+            get() = if (password.isNotBlank())
+                "redis://:$password@$host:$port/$database"
+            else
+                "redis://$host:$port/$database"
+    }
 }

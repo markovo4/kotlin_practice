@@ -1,17 +1,19 @@
 package todolist.application.todo
 
 import todolist.application.auth.UserSession
+import todolist.database.DatabaseFactory
 import todolist.models.*
 import todolist.models.exceptions.TodoNotFoundException
 import todolist.repository.DbTodoRepository
 
 class TodoService (
-    private val todoRepository: DbTodoRepository,
     private val session: UserSession,
+    private val todoRepository: DbTodoRepository = DbTodoRepository(DatabaseFactory.db),
     private val todoList: TodoList = TodoList(),
 ) {
     fun getAllTodos(): List<Todo>{
         val result = todoList.listTodos()
+
         return result.getOrElse {
             val todos = todoRepository.findAll(session.userId)
             todoList.clearAndAddAll(todos)

@@ -10,7 +10,7 @@ import org.ktorm.entity.sequenceOf
 import todolist.database.DatabaseFactory
 import todolist.database.UserEntity
 import todolist.database.Users
-import todolist.utils.JwtConfig
+import todolist.todolist.application.auth.SessionServices
 import todolist.utils.PasswordHasher
 
 object AuthService {
@@ -31,17 +31,15 @@ object AuthService {
         }
 
         db.sequenceOf(Users).add(user)
+
         return true
     }
 
-    fun login(email: String, password: String): UserSession? {
+    fun login(email: String, password: String): String? {
         val user = db.sequenceOf(Users).find { it.email eq email } ?: return null
 
-        return if (PasswordHasher.verify(password, user.password)){
-            JwtConfig.makeToken(email)
-            return UserSession(userId = user.id, email = user.email)
-        } else {
-            null
-        }
+        if (!PasswordHasher.verify(password, user.password)) return null
+
+        return SessionServices.createSession(user.id, user.email)
     }
 }

@@ -4,11 +4,11 @@ import todolist.models.NoteStatus
 import todolist.application.auth.AuthService
 import todolist.application.auth.UserSession
 import todolist.application.todo.TodoService
-import todolist.database.DatabaseFactory
-import todolist.repository.DbTodoRepository
+import todolist.todolist.application.auth.SessionServices
 
 class TodoCLI {
 
+    private var sessionId: String? = null
     private var session: UserSession? = null
     private var todoService: TodoService? = null
 
@@ -58,7 +58,10 @@ class TodoCLI {
             handleRegister()
         }
 
-        session = AuthService.login(email, password)
+        sessionId = AuthService.login(email, password)
+        sessionId?.let { session = SessionServices.getSession(it) }
+
+
     }
 
 
@@ -100,8 +103,8 @@ class TodoCLI {
             handleLogin()
         }
 
-        session = AuthService.login(email, password)
-    }
+        sessionId = AuthService.login(email, password)
+        sessionId?.let { session = SessionServices.getSession(it) } }
 
     fun start() {
         println("----------------------------Welcome to TodoList----------------------------")
@@ -128,7 +131,6 @@ class TodoCLI {
         println("-------------------Please chose action below at the menu-------------------")
 
         todoService = TodoService(
-            todoRepository = DbTodoRepository(DatabaseFactory.db),
             session = session!!
         )
 

@@ -9,10 +9,13 @@ import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
+import io.ktor.server.sessions.Sessions
+import io.ktor.server.sessions.cookie
 import todolist.database.DatabaseFactory
 import todolist.presentation.cli.TodoCLI
 import todolist.todolist.config.Config
 import todolist.todolist.database.RedisFactory
+import todolist.todolist.presentation.routes.authRoutes
 import todolist.todolist.presentation.routes.todoRoutes
 import java.util.logging.LogManager
 
@@ -43,7 +46,15 @@ fun main() {
 
 fun Application.module() {
     install(CallLogging)
-
+    install(Sessions) {
+        cookie<String>("SESSION_ID") {
+            cookie.path = "/"
+            cookie.httpOnly = true
+            cookie.maxAgeInSeconds = 3600
+            cookie.secure = false
+            cookie.extensions["SameSite"] = "Strict"
+        }
+}
     install(ContentNegotiation){
         gson {
             setPrettyPrinting()
@@ -51,11 +62,13 @@ fun Application.module() {
         }
     }
 
-    val redis = RedisFactory.commands
+    RedisFactory.commands
     environment.monitor.subscribe(ApplicationStopping){
         RedisFactory.close()
     }
 
-    routing { todoRoutes() }
+    routing {
+        authRoutes()
+        todoRoutes()
+    }
 }
-

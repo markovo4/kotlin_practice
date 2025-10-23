@@ -11,6 +11,9 @@ repositories {
 
 
 dependencies {
+    implementation("io.ktor:ktor-server-sessions:2.3.12")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.12")
+    implementation("io.ktor:ktor-server-core:2.3.12")
     testImplementation(kotlin("test"))
     implementation("org.ktorm:ktorm-core:4.0.0")
     implementation("org.ktorm:ktorm-support-mysql:4.0.0")
